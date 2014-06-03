@@ -14,12 +14,17 @@ households <- households[which(households$Date=="2007-02-01" | households$Date==
 #Converting the "Global_active_power" column to numeric
 households$Global_active_power <- as.numeric(as.character(households$Global_active_power))
 
-#Opening png device
-png(file="plot1.png", width=480, height=480, bg="white")
+#Combining date and time into one 1 column
+households$datetime <- paste(as.character(households$Date), as.character(households$Time))
 
-#Creating histogram in "plot1.png"
-hist(households$Global_active_power, col="red", main="Global Active Power", xlab="Global Active Power (kilowatts)")
+#Converting datetime column to Time format
+households$datetime <- strptime(households$datetime, format="%Y-%m-%d %H:%M:%S")
+
+#Opening png device
+png(file="plot2.png", width=480, height=480, bg="white")
+
+#Creating line plot in "plot2.png"
+with(households, plot(datetime, Global_active_power, type="l", ylab="Global Active Power (kilowatts)", xlab=""))
 
 #Closing png device
 dev.off()
-
